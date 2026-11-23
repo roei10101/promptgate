@@ -1,0 +1,6 @@
+version: "2"
+linters:
+  exclusions:
+    presets:
+      # Do not demand error checks on Close, Flush and friends.
+      - std-error-handling
