@@ -414,10 +414,18 @@ func TestNewValidatesConfig(t *testing.T) {
 }
 
 func TestParseMode(t *testing.T) {
-	for in, want := range map[string]Mode{"block": ModeBlock, " Redact ": ModeRedact, "MONITOR": ModeMonitor} {
-		got, err := ParseMode(in)
-		if err != nil || got != want {
-			t.Errorf("ParseMode(%q) = %q, %v; want %q", in, got, err, want)
+	cases := []struct {
+		in   string
+		want Mode
+	}{
+		{"block", ModeBlock},
+		{" Redact ", ModeRedact}, // surrounding space and case are ignored
+		{"MONITOR", ModeMonitor},
+	}
+	for _, tc := range cases {
+		got, err := ParseMode(tc.in)
+		if err != nil || got != tc.want {
+			t.Errorf("ParseMode(%q) = %q, %v; want %q", tc.in, got, err, tc.want)
 		}
 	}
 	if _, err := ParseMode("off"); err == nil {
