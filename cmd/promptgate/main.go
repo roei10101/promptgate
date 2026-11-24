@@ -24,15 +24,22 @@ import (
 var version = "dev"
 
 func main() {
+	os.Exit(realMain())
+}
+
+// realMain holds the body of main so that deferred calls run before the
+// process exits: os.Exit skips them.
+func realMain() int {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 	if err := run(ctx, os.Args[1:], os.Getenv, os.Stderr); err != nil {
 		if errors.Is(err, flag.ErrHelp) {
-			return
+			return 0
 		}
 		fmt.Fprintln(os.Stderr, "promptgate:", err)
-		os.Exit(1)
+		return 1
 	}
+	return 0
 }
 
 // options is the validated command-line configuration.
@@ -105,8 +112,8 @@ func run(ctx context.Context, args []string, getenv func(string) string, stderr 
 		return err
 	}
 	if opts.showVersion {
-		fmt.Fprintln(stderr, "promptgate", version)
-		return nil
+		_, err = fmt.Fprintln(stderr, "promptgate", version)
+		return err
 	}
 
 	logger := slog.New(slog.NewJSONHandler(stderr, nil))
