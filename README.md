@@ -140,7 +140,7 @@ clients. Known gaps, most of which are on the roadmap:
 ## Development
 
 ```sh
-make lint    # gofmt + go vet
+make lint    # gofmt, go vet and golangci-lint (v2, see .golangci.yml)
 make test    # go test -race -cover ./...
 make build   # bin/promptgate
 ```

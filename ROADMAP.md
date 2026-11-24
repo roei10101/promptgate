@@ -11,7 +11,7 @@ revised as the design becomes clearer.
 - [x] JSON body inspection with `block`, `redact` and `monitor` modes
 - [x] Health endpoint, structured logs, graceful shutdown
 - [x] CI: gofmt, vet, race-enabled tests, build
-- [ ] Run golangci-lint in CI
+- [x] Run golangci-lint in CI
 - [ ] Request IDs: generate or propagate `X-Request-Id` and include it in logs and error responses
 - [ ] Access log line per request (method, path, status, duration, bytes)
 - [ ] Inspect compressed request bodies (`Content-Encoding: gzip`)
