@@ -1,6 +1,54 @@
+# golangci-lint v2 configuration. Run with `make lint`.
 version: "2"
+
+run:
+  timeout: 3m
+
 linters:
+  # The default set (errcheck, govet, ineffassign, staticcheck, unused) plus
+  # linters that matter for a network-facing security tool.
+  enable:
+    - bodyclose # HTTP response bodies must be closed
+    - copyloopvar
+    - errorlint # errors.Is / errors.As instead of == and type assertions
+    - gocritic
+    - gosec # common security mistakes
+    - misspell
+    - nilerr
+    - noctx # outgoing HTTP requests must carry a context
+    - revive
+    - unconvert
+    - unparam
+    - usestdlibvars
+  settings:
+    govet:
+      enable:
+        - shadow
+    errcheck:
+      check-type-assertions: true
   exclusions:
     presets:
       # Do not demand error checks on Close, Flush and friends.
       - std-error-handling
+    rules:
+      # Tests talk to local httptest servers and may ignore cleanup errors.
+      # bodyclose cannot see that the test helpers close the body themselves.
+      - path: _test\.go
+        linters:
+          - bodyclose
+          - errcheck
+          - gosec
+          - noctx
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  settings:
+    goimports:
+      local-prefixes:
+        - github.com/roei10101/promptgate
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0

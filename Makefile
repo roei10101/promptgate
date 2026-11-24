@@ -11,6 +11,7 @@ test:
 lint:
 	@test -z "$$(gofmt -l .)" || (echo "gofmt needed on:"; gofmt -l .; exit 1)
 	go vet ./...
+	golangci-lint run ./...
 
 fmt:
 	gofmt -w .
