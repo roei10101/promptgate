@@ -53,7 +53,7 @@ revised as the design becomes clearer.
 ## Milestone 6 — Packaging and deployment
 
 - [ ] Dockerfile (distroless, non-root) and image build in CI
-- [ ] Tagged releases with cross-compiled binaries and checksums
+- [x] Tagged releases with cross-compiled binaries and checksums
 - [ ] Kubernetes manifests with probes, resource limits and a NetworkPolicy
 - [ ] Helm chart
 - [ ] SBOM and image vulnerability scan in CI

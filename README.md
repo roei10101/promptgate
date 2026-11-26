@@ -31,17 +31,31 @@ dependencies to audit.
 > tested; see the [roadmap](ROADMAP.md) for what is planned and
 > [Limitations](#limitations) for what it does not do yet.
 
-## Quick start
+## Install
 
-Requires Go 1.24 or newer.
+Download a prebuilt binary for Linux, macOS or Windows (amd64 and arm64) from
+the [latest release](https://github.com/roei10101/promptgate/releases/latest),
+and check it against `checksums.txt`:
+
+```sh
+sha256sum --ignore-missing -c checksums.txt
+tar xzf promptgate_*_linux_amd64.tar.gz
+./promptgate -version
+```
+
+Or build from source (Go 1.24 or newer):
 
 ```sh
 git clone https://github.com/roei10101/promptgate.git
 cd promptgate
-make build
+make build        # bin/promptgate
+```
 
+## Quick start
+
+```sh
 # Put the gateway in front of any HTTP(S) LLM API, e.g. a local Ollama:
-./bin/promptgate -upstream http://localhost:11434
+promptgate -upstream http://localhost:11434
 ```
 
 Then point your client's base URL at `http://127.0.0.1:8080` instead of the
@@ -155,6 +169,15 @@ internal/proxy     the gateway handler: JSON inspection + reverse proxy
 
 Test fixtures build fake credentials at run time, so the repository never
 contains a credential-shaped string.
+
+Releases are cut by pushing a `v*` tag: the [release workflow](.github/workflows/release.yml)
+runs the tests and then [GoReleaser](.goreleaser.yaml), which publishes the
+archives, `checksums.txt` and a changelog. `goreleaser release --snapshot --clean`
+builds the same archives locally without publishing.
+
+## Security
+
+See [SECURITY.md](SECURITY.md) for how to report a vulnerability privately.
 
 ## License
 
